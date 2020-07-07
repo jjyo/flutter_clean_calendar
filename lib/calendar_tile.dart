@@ -67,16 +67,19 @@ class CalendarTile extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(
+                  height: 3,
+                ),
                 Text(
                   DateFormat("d").format(date),
                   style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w500,
                       color: isSelected
                           ? Colors.white
                           : Utils.isSameDay(this.date, DateTime.now())
                               ? todayColor
-                              : inMonth ? Colors.black : Colors.grey),
+                              : inMonth ? Colors.black87 : Colors.grey),
                 ),
                 events != null && events.length > 0
                     ? Row(
@@ -84,21 +87,31 @@ class CalendarTile extends StatelessWidget {
                         children: events.map((event) {
                           eventCount++;
                           if (eventCount > 3) return Container();
+
+
+                          Color dotColor = event["isDone"]
+                              ? eventDoneColor ??
+                              Theme.of(context).primaryColor
+                              : eventColor ?? Theme.of(context).accentColor;
+
+                          if (isSelected){
+                            dotColor = Colors.white;
+                          }
+
                           return Container(
                             margin: EdgeInsets.only(
-                                left: 2.0, right: 2.0, top: 1.0),
-                            width: 5.0,
-                            height: 5.0,
+                                left: 2.0, right: 2.0),
+                            width: 4.0,
+                            height: 4.0,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: event["isDone"]
-                                  ? eventDoneColor ??
-                                      Theme.of(context).primaryColor
-                                  : eventColor ?? Theme.of(context).accentColor,
+                              color: dotColor,
                             ),
                           );
                         }).toList())
-                    : Container(),
+                    : SizedBox(
+                  height: 5,
+                ),
               ],
             ),
           ),
